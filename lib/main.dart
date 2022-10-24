@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(data['data'][idx]['question']),
             Card(
@@ -43,14 +44,14 @@ class _MyAppState extends State<MyApp> {
             Row(
               children: [
                 TextButton(
-                  onPressed: () {
+                  onPressed: () { 
                     setState(() {
                       String text = controller.text;
                       correct = text == data['data'][idx]['answer'];
                       Checklist.add(Card(
                         child: Text("${data['data'][idx]['answer']}: $correct"),
                       ));
-                      idx = idx <= data['data'].length ? idx + 1 : 0;
+                      idx = idx >= data['data'].length ? idx + 1 : 0;
                       // idx++;
                       controller.text = '';
                     });
