@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:english_app/check.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: MyApp(),
   ));
 }
@@ -30,52 +32,65 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(data['data'][idx]['question']),
-            Card(
+    return (Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            data['data'][idx]['question'],
+            style: TextStyle(fontSize: 18),
+          ),
+          Card(
+            child: Container(
+              width: 327,
+              height: 56,
               child: TextField(
                 controller: controller,
+                decoration: InputDecoration(border: OutlineInputBorder()),
               ),
             ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () { 
-                    setState(() {
-                      String text = controller.text;
-                      correct = text == data['data'][idx]['answer'];
-                      Checklist.add(Card(
-                        child: Text("${data['data'][idx]['answer']}: $correct"),
-                      ));
-                      idx = idx >= data['data'].length ? idx + 1 : 0;
-                      // idx++;
-                      controller.text = '';
-                    });
-                  },
-                  child: Text('Submit'),
-                ),
-              ],
-            ),
-            correct ? Text('good') : Text(''),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Test(
-                        checklist: Checklist,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    String text = controller.text;
+                    correct = text == data['data'][idx]['answer'];
+                    Checklist.add(Card(
+                      child: Text(
+                        "${data['data'][idx]['answer']}: $correct",
+                        style: TextStyle(fontSize: 18),
                       ),
                     ));
-              },
-              child: Text('next'),
-            )
-          ],
-        ),
+                    idx = idx >= data['data'].length ? idx + 1 : 0;
+                    // idx++;
+                    controller.text = '';
+                  });
+                },
+                child: Text('Submit',style: GoogleFonts.inter(),),
+              ),
+            ],
+          ),
+          correct ? Text('good') : Text(''),
+          OutlinedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Test(
+                      checklist: Checklist,
+                    ),
+                  ));
+            },
+            child: Text(
+              'next',
+              style: TextStyle(fontSize: 18),
+            ),
+          )
+        ],
       ),
-    );
+    ));
   }
 }
